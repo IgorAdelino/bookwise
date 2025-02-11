@@ -1,6 +1,6 @@
 'use client'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { DefaultValues, FieldValues, SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
+import { DefaultValues, FieldValues, Path, SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
 import { ZodType } from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { FIELD_NAMES, FIELD_TYPES } from "@/constants"
+import ImageUpload from "./ImageUpload"
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>
@@ -46,24 +48,29 @@ const AuthForm =<T extends FieldValues>({type, schema, defaultValues, onSubmit}:
         'Please complete all fields and upload a valid university ID to gain access to the library'}
       </p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6 w-full">
+          {
+            Object.keys(defaultValues).map((field) => 
+              (
+                <FormField
+                  key= {field}
+                  control={form.control}
+                  name={field as Path<T>}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="capitalize">{FIELD_NAMES[field.name as keyof typeof FIELD_NAMES]}</FormLabel>
+                      <FormControl>
+                        {field.name === "universityCard" ? (<ImageUpload/>)
+                        : (<Input required type={FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]} {...field} className="form-input" />)}
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )
+            )
+          }
+          <Button type="submit" className="form-btn">{isSignIn ? 'Sign In': 'Sign Up'}</Button>
         </form>
       </Form>
 
