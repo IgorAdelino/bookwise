@@ -9,9 +9,9 @@ const Home = () => {
     <BookOverview {...sampleBooks[0]}/>
 
     <BookList
-    //  title= "Latest books"
-    //  books= {sampleBooks}
-    //  containerClassName = "mt-28"
+     title= "Latest books"
+     books= {sampleBooks}
+     containerClassName = "mt-28"
      />
     </>
   );
