@@ -27,8 +27,6 @@ interface Props<T extends FieldValues> {
 const AuthForm =<T extends FieldValues>({type, schema, defaultValues, onSubmit}: Props<T>) => {
   const isSignIn = type === 'SIGN_IN'
 
-
-
   const form: UseFormReturn<T> = useForm({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>
