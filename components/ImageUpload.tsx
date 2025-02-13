@@ -75,7 +75,7 @@ const ImageUpload = ({onFileChange}: {onFileChange: (filePath: string) => void})
       </button>
       {
         file && (
-          <IKImage alt={file.filePath} path={file.filePath} width={300} height={300}/>
+          <IKImage alt={file.filePath} path={file.filePath} width={500} height={300}/>
         )
       }
     </ImageKitProvider>
